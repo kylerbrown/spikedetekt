@@ -7,14 +7,6 @@ from spikedetekt.parameters import Parameters
 from spikedetekt.utils import basename_noext
 import os
 
-usage = '''
-SpikeDetekt should be called as:
-
-python detektspikes.py filename.params
-
-All options must be specified in the parameters file.
-'''
-
 
 def main(parameters_file, extrafields=None):
     try:
