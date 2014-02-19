@@ -3,6 +3,7 @@
 Main script file for SpikeDetekt
 '''
 import sys
+import spikedetekt.detektspikes
 
 usage = '''
 SpikeDetekt should be called as:
@@ -20,3 +21,24 @@ if __name__ == '__main__':
     # Read parameters file
     parameters_file = sys.argv[1]
     extrafields = sys.argv[2:]
+    spikedetekt.detektspikes(parameters_file, extrafields)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
