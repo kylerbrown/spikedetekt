@@ -5,6 +5,7 @@ from numpy import *
 from itertools import izip
 import numpy as np
 
+
 def connected_components(st_arr, ch_graph, s_back):
     '''
     Returns a list of pairs (samp, chan) of the connected components in the 2D
@@ -15,7 +16,7 @@ def connected_components(st_arr, ch_graph, s_back):
     s_back = int(s_back)
     label_buffer = np.zeros((n_s, n_ch), dtype=int32)
     # component indices, a dictionary with keys the label of the component
-    # and values a list of pairs (sample, channel) belonging to that component  
+    # and values a list of pairs (sample, channel) belonging to that component
     comp_inds = {}
     # mch_graph is the channel graph, but with edge node connected to itself
     # because we want to include ourself in the adjacency. Each key of the
@@ -41,7 +42,7 @@ def connected_components(st_arr, ch_graph, s_back):
         # the next two lines iterate through all the neighbours of i_s, i_ch
         # in the graph defined by ch_graph in the case of edges, and
         # j_s from i_s-s_back to i_s.
-        for j_s in xrange(i_s-s_back, i_s+1):
+        for j_s in xrange(i_s - s_back, i_s + 1):
             # allow us to leave out a channel from the graph to exclude bad
             # channels
             if i_ch not in mch_graph:
@@ -52,25 +53,28 @@ def connected_components(st_arr, ch_graph, s_back):
                 # if the adjacent element is nonzero we need to do something
                 if adjlabel:
                     curlabel = label_buffer[i_s, i_ch]
-                    if curlabel==0:
+                    if curlabel == 0:
                         # if current element is still zero, we just assign
                         # the label of the adjacent element to the current one
                         label_buffer[i_s, i_ch] = adjlabel
                         # and add it to the list for the labelled component
                         comp_inds[adjlabel].append((i_s, i_ch))
-                    elif curlabel!=adjlabel:
+                    elif curlabel != adjlabel:
                         # if the current element is unequal to the adjacent
                         # one, we merge them by reassigning the elements of the
                         # adjacent component to the current one
                         # samps_chans is an array of pairs sample, channel
                         # currently assigned to component adjlabel
-                        samps_chans = np.array(comp_inds[adjlabel], dtype=int32)
+                        samps_chans = np.array(
+                            comp_inds[adjlabel],
+                            dtype=int32)
                         # samps_chans[:, 0] is the sample indices, so this
                         # gives only the samp,chan pairs that are within
                         # s_back of the current point
                         # TODO: is this the right behaviour? If a component can
                         # have a width bigger than s_back I think it isn't!
-                        samps_chans = samps_chans[i_s-samps_chans[:, 0]<=s_back]
+                        samps_chans = samps_chans[
+                            i_s - samps_chans[:, 0] <= s_back]
                         # relabel the adjacent samp,chan points with current
                         # label
                         samps, chans = samps_chans[:, 0], samps_chans[:, 1]
@@ -78,7 +82,7 @@ def connected_components(st_arr, ch_graph, s_back):
                         # add them to the current label list, and remove the
                         # adjacent component entirely
                         comp_inds[curlabel].extend(comp_inds.pop(adjlabel))
-        if label_buffer[i_s, i_ch]==0:
+        if label_buffer[i_s, i_ch] == 0:
             # if nothing is adjacent, we have the beginnings of a new component,
             # so we label it, create a new list for the new component which is
             # given label c_label, then increase c_label for the next new

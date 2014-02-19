@@ -6,6 +6,7 @@ import numpy as np
 from scipy import signal
 from parameters import Parameters
 
+
 def get_filter_params():
     '''
     Get the filter coefficients for the high-pass
@@ -15,14 +16,17 @@ def get_filter_params():
     F_LOW = Parameters['F_LOW']
     F_HIGH = Parameters['F_HIGH']
     b, a = signal.butter(BUTTER_ORDER,
-                        (F_LOW/(SAMPLE_RATE/2), F_HIGH/(SAMPLE_RATE/2)),
-                        'pass')
+                         (F_LOW / (SAMPLE_RATE / 2),
+                          F_HIGH / (SAMPLE_RATE / 2)),
+                         'pass')
     return b, a
 
-def apply_filtering((b, a), x):
+
+def apply_filtering(xxx_todo_changeme, x):
+    (b, a) = xxx_todo_changeme
     out_arr = np.zeros_like(x)
     #FilteredChunk = signal.filtfilt(b, a, DatChunk.astype(np.int32), axis=0)
     #FilteredChunk = signal.filtfilt(b, a, DatChunk.astype(np.int32).T).T
     for i_ch in xrange(x.shape[1]):
-        out_arr[:, i_ch] = signal.filtfilt(b, a, x[:, i_ch]) 
+        out_arr[:, i_ch] = signal.filtfilt(b, a, x[:, i_ch])
     return out_arr

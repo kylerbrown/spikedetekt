@@ -42,32 +42,36 @@ The Probe object has the following attributes:
 
 __all__ = ['Probe']
 
+
 class Probe(object):
+
     def __init__(self, filename):
         ns = {}
         probetext = open(filename, 'r').read()
         try:
             exec probetext in ns
-        except Exception, e:
-            raise IOError("Cannot parse probe file, error encountered: "+str(e))
+        except Exception as e:
+            raise IOError(
+                "Cannot parse probe file, error encountered: " + str(e))
         if 'probes' not in ns:
             raise IOError("Cannot parse probe file, no 'probes' dict found.")
         probes = ns['probes']
         self.probes = probes
         N = max(max(max(t) for t in edges) for edges in probes.itervalues())
-        self.num_channels = N+1
+        self.num_channels = N + 1
         self.shanks_set = set(probes.keys())
         # sanity check on graphs, no repeated pairs or self-connections
         for edges in probes.itervalues():
             pairs = []
             for i, j in edges:
-                if i<j:
+                if i < j:
                     pairs.append((i, j))
-                elif i>j:
+                elif i > j:
                     pairs.append((j, i))
                 else:
-                    raise ValueError("Probe graph doesn't allow self-connections.")
-            if len(set(pairs))<len(pairs):
+                    raise ValueError(
+                        "Probe graph doesn't allow self-connections.")
+            if len(set(pairs)) < len(pairs):
                 raise ValueError("Repeated edge found in probe graph.")
         # construct the vertex set for each probe, check there are no overlaps
         self.channel_set = vs = {}

@@ -1,11 +1,13 @@
 from __future__ import with_statement
-import os, sys, numpy
+import os
+import sys
+import numpy
 
 scripts = ["scripts/detektspikes.py",
            ]
 
 from distutils.core import setup, Extension
-    
+
 setup(name="spikedetekt",
       scripts=scripts,
       version="0.2 beta",
