@@ -5,7 +5,6 @@ Main script file for SpikeDetekt
 from spikedetekt.core import spike_detection_job
 from spikedetekt.parameters import Parameters
 from spikedetekt.utils import basename_noext
-import sys
 import os
 
 usage = '''
@@ -16,14 +15,8 @@ python detektspikes.py filename.params
 All options must be specified in the parameters file.
 '''
 
-if __name__ == '__main__':
-    if len(sys.argv) <= 1:  # or len(sys.argv)>2:
-        print usage.strip()
-        exit()
 
-    # Read parameters file
-    parameters_file = sys.argv[1]
-    extrafields = sys.argv[2:]
+def main(parameters_file, extrafields=None):
     try:
         if not extrafields:
             execfile(parameters_file, {}, Parameters)
@@ -40,7 +33,8 @@ if __name__ == '__main__':
                     '%' + fields[0] + '%', fields[1])
             exec(parameters_text, {}, Parameters)
     except IOError:
-        print 'Parameters file %s does not exist or cannot be read.' % parameters_file
+        print('Parameters file %s does not exist or cannot be read.'
+              % parameters_file)
         exit()
     print 'Read parameters from file', parameters_file
 
